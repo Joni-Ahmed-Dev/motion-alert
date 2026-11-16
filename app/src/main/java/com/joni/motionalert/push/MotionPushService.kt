@@ -1,6 +1,6 @@
 package com.joni.motionalert.push
 
-import com.google.firebase.FirebaseMessagingService
+import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.joni.motionalert.data.MotionApi
 import com.joni.motionalert.motionApp

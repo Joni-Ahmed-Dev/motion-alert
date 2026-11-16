@@ -4,6 +4,7 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
 import com.joni.motionalert.MotionAlertApp
 import com.joni.motionalert.data.MotionApi
+import kotlinx.coroutines.launch
 
 /** Registers the owner phone's FCM token with the relay. Silently does
  *  nothing when Firebase isn't configured. */
