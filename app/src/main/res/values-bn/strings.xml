@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Motion Alert</string>
+
+    <string name="role_title">এটা কোন ফোন?</string>
+    <string name="role_bike">বাইকের ফোন</string>
+    <string name="role_bike_desc">নড়াচড়া ধরবে আর অ্যালার্ট পাঠাবে</string>
+    <string name="role_owner">আমার ফোন</string>
+    <string name="role_owner_desc">মোশন অ্যালার্ট পাবে</string>
+    <string name="role_change">ফোনের ভূমিকা বদলান</string>
+
+    <string name="notif_permission_title">নোটিফিকেশন চালু করুন</string>
+    <string name="notif_permission_text">মোশন অ্যালার্ট নোটিফিকেশন হিসেবে আসবে</string>
+    <string name="notif_allow">চালু করুন</string>
+
+    <string name="battery_title">অ্যাপটা ব্যাকগ্রাউন্ডে চলতে দিন</string>
+    <string name="battery_text">ব্যাটারি সাশ্রয় চালু থাকলে মোশন অ্যালার্ট বন্ধ হয়ে যেতে পারে। অ্যাপটাকে সীমা ছাড়া চলতে দিন।</string>
+    <string name="battery_button">ব্যাকগ্রাউন্ডে চলতে দিন</string>
+    <string name="battery_skip">এখন না</string>
+
+    <string name="bike_status_on">নজরদারি চালু আছে</string>
+    <string name="bike_status_off">নজরদারি বন্ধ আছে</string>
+    <string name="bike_start">নজরদারি চালু করুন</string>
+    <string name="bike_stop">নজরদারি বন্ধ করুন</string>
+    <string name="bike_test">পরীক্ষামূলক অ্যালার্ট পাঠান</string>
+    <string name="bike_test_sent">পরীক্ষামূলক অ্যালার্ট পাঠানো হয়েছে</string>
+    <string name="bike_last_alert">শেষ অ্যালার্ট %1$s</string>
+    <string name="bike_never">এখনো কোনো অ্যালার্ট পাঠানো হয়নি</string>
+    <string name="bike_note">এই ফোনটা বাইকে রাখুন। মোশন অ্যালার্ট আপনার ফোনে যাবে।</string>
+
+    <string name="owner_title">অ্যালার্ট চালু আছে</string>
+    <string name="owner_note">বাইক নড়লেই এখানে নোটিফিকেশন আসবে। তাতে ট্যাপ করলে Find Hub খুলবে, সেখানে বাইকটা দেখতে পাবেন।</string>
+    <string name="owner_open_findhub">Find Hub খুলুন</string>
+    <string name="owner_test_notif">নোটিফিকেশন পরীক্ষা করুন</string>
+
+    <string name="motion_title">নড়াচড়া ধরা পড়েছে</string>
+    <string name="motion_text">বাইক নড়েছে। Find Hub খুলতে ট্যাপ করুন।</string>
+
+    <string name="channel_monitoring">নজরদারি</string>
+    <string name="channel_alerts">মোশন অ্যালার্ট</string>
+    <string name="service_notification">নড়াচড়ার দিকে নজর রাখা হচ্ছে</string>
+</resources>
