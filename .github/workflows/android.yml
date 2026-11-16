@@ -1,0 +1,84 @@
+name: Android CI
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.10.2
+      - name: Run unit tests
+        run: gradle :app:testDebugUnitTest --stacktrace
+
+  build:
+    runs-on: ubuntu-latest
+    env:
+      MOTION_SECRET: ${{ secrets.MOTION_SECRET }}
+      KEYSTORE_PATH: keystore.jks
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.10.2
+      - name: Firebase config
+        env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: |
+          if [ -n "$GOOGLE_SERVICES_JSON" ]; then echo "$GOOGLE_SERVICES_JSON" | base64 -d > app/google-services.json; fi
+      - name: Check required secrets
+        env:
+          MOTION_SECRET: ${{ secrets.MOTION_SECRET }}
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+          KEYSTORE_B64_A: ${{ secrets.KEYSTORE_B64_A }}
+          KEYSTORE_B64_B: ${{ secrets.KEYSTORE_B64_B }}
+          KEYSTORE_B64_C: ${{ secrets.KEYSTORE_B64_C }}
+          KEYSTORE_B64_D: ${{ secrets.KEYSTORE_B64_D }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          for v in MOTION_SECRET GOOGLE_SERVICES_JSON KEYSTORE_B64_A KEYSTORE_B64_B KEYSTORE_B64_C KEYSTORE_B64_D KEYSTORE_PASSWORD KEY_ALIAS KEY_PASSWORD; do
+            if [ -z "${!v}" ]; then echo "Missing secret: $v"; exit 1; fi
+          done
+          echo "All required secrets present"
+      - name: Decode release keystore
+        env:
+          KEYSTORE_B64_A: ${{ secrets.KEYSTORE_B64_A }}
+          KEYSTORE_B64_B: ${{ secrets.KEYSTORE_B64_B }}
+          KEYSTORE_B64_C: ${{ secrets.KEYSTORE_B64_C }}
+          KEYSTORE_B64_D: ${{ secrets.KEYSTORE_B64_D }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        run: |
+          echo "${KEYSTORE_B64_A}${KEYSTORE_B64_B}${KEYSTORE_B64_C}${KEYSTORE_B64_D}" | base64 -d > app/keystore.jks
+          ls -l app/keystore.jks
+          keytool -list -keystore app/keystore.jks -storepass "$KEYSTORE_PASSWORD"
+      - name: Build release APK
+        run: gradle :app:assembleRelease --stacktrace
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MotionAlert-apk
+          path: app/build/outputs/apk/release/*.apk
+      - name: Publish GitHub Release (on tag)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: app/build/outputs/apk/release/*.apk
